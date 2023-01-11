@@ -1,5 +1,5 @@
 package spring.security.init.entity;
 
 public enum UserType {
-    ADMIN, USER
+    ROLE_ADMIN, ROLE_USER
 }

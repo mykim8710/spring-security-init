@@ -1,4 +1,4 @@
-package spring.security.init.security;
+package spring.security.init.global.config.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("loadUserByUsername username = " + username);
-
         return userRepository.findByUsername(username)
                 .map(user -> createUser(username,user ))
                 .orElseThrow(() -> new UsernameNotFoundException("아이디나 비밀번호를 확인해주세요."));

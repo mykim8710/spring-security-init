@@ -1,23 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+
+    <script>
+       window.onload = function(){
+            let signInButton = document.getElementById('signInButton');
+            signInButton.addEventListener('click', function(){
+                signIn();
+            });
+        }
+
+        function signIn() {
+            callSignApi().then(response =>{
+               if(response.status === 400) {
+                   document.getElementById("error-message").innerText = response.message;
+               }
+               if(response.status === 200) {
+                   location.href="/home";
+               }
+            });
+        }
+
+        async function callSignApi() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            const res = await fetch('/sign-in', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ // 일반 객체를 fordata형식으로 변환해주는 클래스
+                    username: username,
+                    password: password
+                })
+            }).catch(error => {
+                console.log(error)
+            });
+
+            const data = await res.json();
+            return data;
+        }
+    </script>
 </head>
 <body>
-    <p>root index</p>
-    <!--<a href="/login">sign-in</a>-->
+    <h2><b>Sign in</b></h2>
+    <!--<h3>in memory Login 방식</h3>
+    <a href="/login">sign-in</a>-->
+    <br>
 
+    <!--<h3>Form Login 방식</h3>
     <div>
         <form action="/sign-in" method="post">
-            <label>username</label>
-            <input type="text" name="username">
+            <p>
+                <label>username</label>
+                <input type="text" name="username">
+            </p>
+            <p>
+                <label>password</label>
+                <input type="password" name="password">
+            </p>
 
-            <label>password</label>
-            <input type="password" name="password">
-
-            <input type="submit" value="SIGN IN">
+            <input type="submit" value="SIGN IN FORM">
         </form>
+
+        <div>
+            <p class="error-message" th:text="${exception}" th:if="${error != null}"></p>
+        </div>
+    </div>
+    <hr>-->
+
+    <h3>API Login 방식</h3>
+    <div>
+        <form id="apiSignInForm">
+            <p>
+                <label>username</label>
+                <input type="text" id="username" name="username" class="formInput">
+            </p>
+            <p>
+                <label>password</label>
+                <input type="password" id="password" name="password" class="formInput">
+            </p>
+
+            <button type="button" id="signInButton">SIGN IN API</button>
+        </form>
+
+        <div>
+            <p class="error-message" id="error-message"></p>
+        </div>
     </div>
 
 </body>

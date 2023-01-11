@@ -34,7 +34,7 @@ public class InitUserInsert {
         public void init() {
             for (int i = 1; i <= 10; i++) {
                 String username = i % 2 == 0 ? "admin" : "user";
-                UserType type = i % 2 == 0 ? UserType.ADMIN : UserType.USER;
+                UserType type = i % 2 == 0 ? UserType.ROLE_ADMIN : UserType.ROLE_USER;
 
                 User user = User.builder()
                                     .username(username +i)

@@ -1,4 +1,4 @@
-package spring.security.init.security.handler;
+package spring.security.init.global.config.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,6 +15,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         log.error("Access Denied");
-        //response.sendRedirect("/home");
+        response.sendRedirect("/home");
     }
 }

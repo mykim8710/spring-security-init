@@ -1,4 +1,4 @@
-package spring.security.init.security;
+package spring.security.init.global.config.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,14 +7,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import spring.security.init.dto.ResponseUserSignInDto;
-
-import java.util.Collection;
-import java.util.List;
 
 // 화면에서 입력한 로그인 정보와 DB에서 가져온 사용자의 정보를 비교해주는 interface >> authenticate 메서드
 @Slf4j

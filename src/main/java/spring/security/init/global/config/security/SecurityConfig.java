@@ -1,34 +1,28 @@
-package spring.security.init.security;
+package spring.security.init.global.config.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import spring.security.init.security.handler.CustomAccessDeniedHandler;
-import spring.security.init.security.handler.CustomAuthenticationFailureHandler;
-import spring.security.init.security.handler.CustomAuthenticationSuccessHandler;
-
-import java.util.List;
+import spring.security.init.global.config.security.handler.CustomAccessDeniedHandler;
+import spring.security.init.global.config.security.handler.CustomAuthenticationFailureHandler;
+import spring.security.init.global.config.security.handler.CustomAuthenticationSuccessHandler;
 
 @Slf4j
 @RequiredArgsConstructor
 @EnableWebSecurity // Spring Security 활성화 => 기본 스프링 필터체인에 등록
+@EnableGlobalMethodSecurity(securedEnabled = true) // secure annotation 활성화
 public class SecurityConfig {
     // user password encoder 빈등록
     @Bean
@@ -54,14 +48,14 @@ public class SecurityConfig {
 //        UserDetails user = User.builder()
 //                                    .username("user")   // id
 //                                    .password(passwordEncoder.encode("1111")) // password
-//                                    .roles("USER")
+//                                    .roles("ROLE_USER")
 //                                    .build();
 //        System.out.println("user.getPassword() = " + user.getPassword());
 //
 //        UserDetails admin = User.builder()
 //                                    .username("admin")
 //                                    .password(passwordEncoder.encode("1111"))
-//                                    .roles("USER", "MANAGER", "ADMIN")
+//                                    .roles("ROLE_USER", "ROLE_ADMIN")
 //                                    .build();
 //        System.out.println("admin.getPassword() = " + admin.getPassword());
 //
@@ -109,8 +103,8 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/", "/sign-in").anonymous()
-                .antMatchers("/admin").hasAnyAuthority("ADMIN")
-                .antMatchers("/user").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/admin").hasAnyRole("ADMIN")
+                .antMatchers("/user").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 
         // 로그인 설정
@@ -161,13 +155,5 @@ public class SecurityConfig {
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
-
-
-
-
-
-
-
-
 
 }
